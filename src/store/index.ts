@@ -34,10 +34,10 @@ export const useEventStore = defineStore("eventStore", () => {
     const res: any = await fetch(API_URL); // retunr response
     const data: any = await res.json(); // get json data
 
-    // return only items with cover image
+    // return items with cover image
     eventsData.value = data.filter((items: any) => {
       if (!items.private) {
-        return (items.flyerFront = items.flyerFront);
+        return items.flyerFront != undefined;
       }
     });
     // sort items by date
@@ -120,6 +120,21 @@ export const useEventStore = defineStore("eventStore", () => {
     itemsInStore.value.splice(index, 1);
     useLocalStorage("event_store", itemsInStore.value);
   };
+  // return all events, between two dates
+  const filterListBetweenTwoDates = async (
+    startTime: string | Date,
+    endTime: string | Date
+  ) => {
+    await getEventDataFromAPI(); // reset event list
+    // filter the list between two dates
+    eventsDataNoGroupe.value = eventsDataNoGroupe.value.filter((item: any) => {
+      return (
+        new Date(item.startTime).getTime() >= new Date(startTime).getTime() &&
+        new Date(item.startTime).getTime() <= new Date(endTime).getTime()
+      );
+    });
+    eventsData.value = await groupByDate(eventsDataNoGroupe.value); // group the list
+  };
 
   return {
     getEventDataFromAPI,
@@ -129,5 +144,6 @@ export const useEventStore = defineStore("eventStore", () => {
     itemsInStore,
     onRemoveItemFromStore,
     searchEvents,
+    filterListBetweenTwoDates,
   };
 });

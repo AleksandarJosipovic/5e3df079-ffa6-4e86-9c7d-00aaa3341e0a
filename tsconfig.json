@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "allowJs": true,
     "allowSyntheticDefaultImports": false,
-    "allowArbitraryExtensions": false,
+    "allowArbitraryExtensions": true,
 
     /* Linting */
     "strict": true,

@@ -24,6 +24,9 @@ const storedItems: [] | any = computed(() => useStore.itemsInStore);
             <EventCard :event="items" :addBtn="false" />
           </div>
         </div>
+        <div v-if="storedItems.length == 0" class="text-gray-700">
+          There are no items in the store
+        </div>
       </div>
     </div>
   </section>
